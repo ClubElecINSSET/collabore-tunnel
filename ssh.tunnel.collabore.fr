@@ -1,0 +1,15 @@
+server {
+    server_name ssh.tunnel.collabore.fr;
+    listen 80;
+
+    #listen 443 ssl;
+
+    #ssl_certificate /etc/nginx/ssl/certs/ssh.tunnel.collabore.fr.pem;
+    #ssl_certificate_key /etc/nginx/ssl/certs/ssh.tunnel.collabore.fr.key;
+
+    location / {
+        return 302 https://tunnel.collabore.fr/;
+    }
+
+    server_tokens off;
+}

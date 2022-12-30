@@ -1,0 +1,40 @@
+[Unit]
+Description=collabore tunnel  Make your local services accessible to all on the public Internet
+After=network.target nginx.service
+
+[Service]
+Environment=UNIX_SOCKETS_DIRECTORY=/tmp/collabore-tunnel
+Environment=SERVER_HOSTNAME=tnl.clb.re
+Environment=CONFIG_DIRECTORY=.
+Environment=SSH_SERVER_HOST=0.0.0.0
+Environment=SSH_SERVER_PORT=22
+Environment=LOG_DEPTH=2
+WorkingDirectory=/opt/collabore-tunnel
+ExecStart=/usr/bin/python3 main.py
+ExecStop=/bin/kill -9 $MAINPID
+ProtectSystem=strict
+ReadWritePaths=/opt/collabore-tunnel /tmp
+ReadOnlyPaths=/usr/bin
+InaccessiblePaths=...
+ProtectHome=true
+ProtectProc=invisible
+ProtectKernelTunables=true
+ProtectControlGroups=true
+NoNewPrivileges=true
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+RestrictNamespaces=uts ipc pid cgroup
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+RestrictRealtime=yes
+MemoryDenyWriteExecute=yes
+LockPersonality=yes
+IPAddressAllow=192.168.1.0/24
+PrivateDevices=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectClock=true
+SystemCallArchitectures=native
+SystemCallFilter=
+
+[Install]
+WantedBy=multi-user.target
