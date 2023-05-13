@@ -6,6 +6,11 @@ After=network.target nginx.service
 Environment=UNIX_SOCKETS_DIRECTORY=/tmp/collabore-tunnel
 Environment=SERVER_HOSTNAME=tnl.clb.re
 Environment=CONFIG_DIRECTORY=.
+Environment=WELCOME_BANNER_FILE=./welcome_banner.txt
+Environment=RATE_LIMIT_COUNT=5
+Environment=RATE_LIMIT_INTERVAL=60
+Environment=MAX_CONNECTIONS_PER_IP=5
+Environment=TIMEOUT=120
 Environment=SSH_SERVER_HOST=0.0.0.0
 Environment=SSH_SERVER_PORT=22
 Environment=LOG_DEPTH=2
