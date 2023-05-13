@@ -1,0 +1,10 @@
+===============================================================================
+Welcome to collabore tunnel!
+collabore tunnel is a free and open source service offered as part of the
+club elec collabore platform (https://collabore.fr) operated by club elec that
+allows you to expose your local services on the public Internet.
+To learn more about collabore tunnel,
+visit the documentation website: https://tunnel.collabore.fr/
+club elec (https://clubelec.insset.fr) is a french not-for-profit
+student organisation.
+===============================================================================
