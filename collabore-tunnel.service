@@ -3,43 +3,61 @@ Description=collabore tunnel  Make your local services accessible to all on the 
 After=network.target nginx.service
 
 [Service]
-Environment=UNIX_SOCKETS_DIRECTORY=/tmp/collabore-tunnel
+Type=exec
+
+# environment variables
+Environment=HOME=/opt/collabore-tunnel/
+Environment=UNIX_SOCKETS_DIRECTORY=/opt/collabore-tunnel/sockets
 Environment=SERVER_HOSTNAME=tnl.clb.re
 Environment=CONFIG_DIRECTORY=.
 Environment=WELCOME_BANNER_FILE=./welcome_banner.txt
 Environment=RATE_LIMIT_COUNT=5
 Environment=RATE_LIMIT_INTERVAL=60
 Environment=MAX_CONNECTIONS_PER_IP=5
-Environment=TIMEOUT=120
 Environment=SSH_SERVER_HOST=0.0.0.0
 Environment=SSH_SERVER_PORT=22
 Environment=LOG_DEPTH=2
+
+# working directory and exec
 WorkingDirectory=/opt/collabore-tunnel
-ExecStart=/usr/bin/python3 main.py
-ExecStop=/bin/kill -9 $MAINPID
-ProtectSystem=strict
-ReadWritePaths=/opt/collabore-tunnel /tmp
-ReadOnlyPaths=/usr/bin
-InaccessiblePaths=...
-ProtectHome=true
-ProtectProc=invisible
-ProtectKernelTunables=true
-ProtectControlGroups=true
-NoNewPrivileges=true
-CapabilityBoundingSet=CAP_NET_BIND_SERVICE
-RestrictNamespaces=uts ipc pid cgroup
-RestrictSUIDSGID=true
-RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
-RestrictRealtime=yes
-MemoryDenyWriteExecute=yes
-LockPersonality=yes
-IPAddressAllow=192.168.1.0/24
+ExecStart=/opt/collabore-tunnel/.env/bin/python3 main.py
+ExecStop=/usr/bin/kill -9 $MAINPID
+
+# filesystem
+TemporaryFileSystem=/:ro
+BindReadOnlyPaths=/lib/ /lib64/ /usr/lib/ /usr/lib64/ /opt/collabore-tunnel/
+BindReadOnlyPaths=/usr/bin/python3 /usr/bin/kill
+BindPaths=/opt/collabore-tunnel/sockets/
+BindPaths=/opt/collabore-tunnel/id_rsa_host
+PrivateTmp=true
 PrivateDevices=true
+ProtectControlGroups=true
 ProtectKernelModules=true
-ProtectKernelLogs=true
-ProtectClock=true
+ProtectKernelTunables=true
+ReadWritePaths=
+
+# network
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+# misc
 SystemCallArchitectures=native
 SystemCallFilter=
+NoNewPrivileges=true
+PrivateUsers=true
+RestrictRealtime=true
+MemoryDenyWriteExecute=true
+ProtectKernelLogs=true
+LockPersonality=true
+ProtectHostname=true
+RemoveIPC=true
+RestrictSUIDSGID=true
+ProtectClock=true
+ProtectProc=invisible
+
+# capabilities
+RestrictNamespaces=uts ipc pid cgroup
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=
 
 [Install]
 WantedBy=multi-user.target
