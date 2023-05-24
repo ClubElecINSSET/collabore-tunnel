@@ -73,7 +73,17 @@ We have deployed collabore tunnel on a server running Ubuntu Server 22.04.
 ### Install required packages
 
 ```
-apt install python3-pip nginx
+apt install python3-pip python3-venv nginx
+```
+
+### Create `collabore-tunnel` user
+
+```
+groupadd collabore-tunnel
+```
+
+```
+useradd -r -s /sbin/nologin -g collabore-tunnel collabore-tunnel
 ```
 
 ### Retrieve sources
@@ -83,17 +93,27 @@ mkdir /opt/collabore-tunnel
 ```
 
 ```
+chown collabore-tunnel:collabore-tunnel /opt/collabore-tunnel
+```
+
+```
 cd /opt/collabore-tunnel
 ```
 
 ```
-git clone https://github.com/ClubElecINSSET/collabore-tunnel .
+runuser -u collabore-tunnel -- git clone https://github.com/ClubElecINSSET/collabore-tunnel .
+```
+
+### Create Python virtual environment
+
+```
+runuser -u collabore-tunnel -- virtualenv .env
 ```
 
 ### Install Python dependencies
 
 ```
-pip install -r requirements.txt
+runuser -u collabore-tunnel -- .env/bin/pip install -r requirements.txt
 ```
 
 ### Install NGINX virtualhosts
