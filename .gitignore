@@ -162,4 +162,5 @@ cython_debug/
 
 # Others
 id_rsa_host
+sockets/
 *.sock
