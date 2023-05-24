@@ -61,7 +61,7 @@ ProtectProc=invisible
 # capabilities
 RestrictNamespaces=yes
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
-AmbientCapabilities=
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 
 [Install]
 WantedBy=multi-user.target
