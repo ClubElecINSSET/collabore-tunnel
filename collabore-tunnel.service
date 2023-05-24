@@ -22,6 +22,10 @@ Environment=LOG_DEPTH=2
 WorkingDirectory=/opt/collabore-tunnel
 ExecStart=/opt/collabore-tunnel/.env/bin/python3 main.py
 ExecStop=/usr/bin/kill -9 $MAINPID
+Restart=on-failure
+RestartSec=10s
+User=collabore-tunnel
+Group=collabore-tunnel
 
 # filesystem
 TemporaryFileSystem=/:ro
